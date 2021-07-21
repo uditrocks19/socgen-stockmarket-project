@@ -1,9 +1,17 @@
 package entitiy;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class StockExchange {
@@ -19,18 +27,59 @@ private String brief;
 private int address_id;
 @Column(name="remarks")
 private String remarks;
+@OneToOne(cascade = CascadeType.ALL)
+@JoinColumn(name = "address_id", referencedColumnName = "id")
+@JsonManagedReference
+private Address address;
+@OneToMany
+private List<Company> companies;
+@OneToMany
+private List<Stock>stocks;
 protected StockExchange()
 {
 	
 }
-public StockExchange(int id, String name, String brief, int address_id, String remarks) {
+
+public StockExchange(String name, String brief, int address_id, String remarks, Address address,
+		List<Company> companies, List<Stock> stocks) {
 	super();
-	this.id=id;
 	this.name = name;
 	this.brief = brief;
 	this.address_id = address_id;
 	this.remarks = remarks;
+	this.address = address;
+	this.companies = companies;
+	this.stocks = stocks;
 }
+
+public Address getAddress() {
+	return address;
+}
+
+public void setAddress(Address address) {
+	this.address = address;
+}
+
+public List<Company> getCompanies() {
+	return companies;
+}
+
+public void setCompanies(List<Company> companies) {
+	this.companies = companies;
+}
+
+public List<Stock> getStocks() {
+	return stocks;
+}
+
+public void setStocks(List<Stock> stocks) {
+	this.stocks = stocks;
+}
+
+public void setId(int id) {
+	this.id = id;
+}
+
 public int getId() {
 	return id;
 }
@@ -75,6 +124,8 @@ public String toString() {
 	builder.append("]");
 	return builder.toString();
 }
+
+
 
 
 
