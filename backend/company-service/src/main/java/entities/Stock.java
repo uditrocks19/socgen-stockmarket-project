@@ -1,5 +1,6 @@
 package entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,68 +8,62 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Stock {
-	@Id
-	@GeneratedValue
-	 private int id;
-	   
-	    private int companyId;
-	    private double price;
-	    private String date;
-	    private String time;
-	    @ManyToOne
-	    private Company company;
-	    protected Stock()
-	    {
-	    	
-	    }
-	    
-	    
-	    
-		public Stock(int companyId, double price, String date, String time, Company company) {
-			super();
-			this.companyId = companyId;
-			this.price = price;
-			this.date = date;
-			this.time = time;
-			this.company = company;
-		}
 
+    @Id
+    @GeneratedValue
+    private int id;
 
+    @Column(name="stock_code")
+    private String stockCode;
 
-		public int getId() {
-			return id;
-		}
-	
-		public int getCompanyId() {
-			return companyId;
-		}
-		public void setCompanyId(int companyId) {
-			this.companyId = companyId;
-		}
-		public double getPrice() {
-			return price;
-		}
-		public void setPrice(double price) {
-			this.price = price;
-		}
-		public String getDate() {
-			return date;
-		}
-		public void setDate(String date) {
-			this.date = date;
-		}
-		public String getTime() {
-			return time;
-		}
-		public void setTime(String time) {
-			this.time = time;
-		}
-		public Company getCompany() {
-			return company;
-		}
-		public void setCompany(Company company) {
-			this.company = company;
-		}
-	    
+    @ManyToOne
+    private Company company;
+
+    @ManyToOne
+    private StockExchange stockExchange;
+
+    public Stock() {
+        super();
+    }
+
+    public Stock(int id, String stockCode, Company company, StockExchange stockExchange) {
+        super();
+        this.id = id;
+        this.stockCode = stockCode;
+        this.company = company;
+        this.stockExchange = stockExchange;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getStockCode() {
+        return stockCode;
+    }
+
+    public void setStockCode(String stockCode) {
+        this.stockCode = stockCode;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public StockExchange getStockExchange() {
+        return stockExchange;
+    }
+
+    public void setStockExchange(StockExchange stockExchange) {
+        this.stockExchange = stockExchange;
+    }
 
 }

@@ -30,7 +30,7 @@ public class IpoService {
 
     public IPO addIpo(IPO ipo)
     {
-        return ipoRepository.save(ipo);
+        return ipoRepository.save(ipo)
     }
 
     public Boolean deleteById(int id)
