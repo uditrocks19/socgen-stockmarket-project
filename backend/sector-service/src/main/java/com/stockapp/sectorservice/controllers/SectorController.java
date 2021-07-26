@@ -2,8 +2,8 @@ package com.stockapp.sectorservice.controllers;
 
 import java.util.List;
 
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +39,7 @@ public class SectorController {
         }
         else
         {
-            return ResponseEntity.status(HttpStatus.SC_NOT_FOUND).body("Sector with id "+ sectorId+" not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sector with id "+ sectorId+" not found.");
         }
     }
 
@@ -52,7 +52,7 @@ public class SectorController {
         }
         else
         {
-            return ResponseEntity.status(HttpStatus.SC_NOT_FOUND).body("Sector with name "+ sectorName+" not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sector with name "+ sectorName+" not found.");
         }
     }
 
@@ -72,7 +72,7 @@ public class SectorController {
     private ResponseEntity deleteSector(@PathVariable int id){
 
         if (!sectorService.deleteById(id)) {
-            return new ResponseEntity<>(HttpStatus.SC_NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(id, HttpStatus.OK);
     }

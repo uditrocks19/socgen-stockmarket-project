@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": false
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -27,9 +30,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
-            ],
-            "scripts": []
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.css",
+            "C:/Users/User/Desktop/workspace/stock-application/socgen-stockmarket-project/frontend/stock-market/node_modules/bootstrap/dist/css/bootstrap.min.css",
+            "C:/Users/User/Desktop/workspace/stock-application/socgen-stockmarket-project/frontend/stock-market/node_modules/ag-grid-community/dist/styles/ag-grid.css",
+              "C:/Users/User/Desktop/workspace/stock-application/socgen-stockmarket-project/frontend/stock-market/node_modules/ag-grid-community/dist/styles/ag-theme-balham.css"  
+          ],
+            "scripts": [
+              "C:/Users/User/Desktop/workspace/stock-application/socgen-stockmarket-project/frontend/stock-market/node_modules/bootstrap/dist/js/bootstrap.js"
+            ]
           },
           "configurations": {
             "production": {
