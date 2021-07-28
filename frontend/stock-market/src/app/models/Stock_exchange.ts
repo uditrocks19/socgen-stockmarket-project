@@ -6,4 +6,4 @@ export interface Stock_exchange{
     brief : string ;
     remarks : string ;
     address : Address; 
-} 
+}

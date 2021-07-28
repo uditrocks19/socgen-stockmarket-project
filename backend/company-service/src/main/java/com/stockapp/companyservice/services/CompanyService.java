@@ -1,20 +1,46 @@
 package com.stockapp.companyservice.services;
 
 
+
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stockapp.companyservice.entities.Company;
+import com.stockapp.companyservice.entities.Ipo;
+import com.stockapp.companyservice.entities.StockExchange;
+import com.stockapp.companyservice.entities.StockPrice;
+import com.stockapp.companyservice.repositories.BodRepository;
 import com.stockapp.companyservice.repositories.CompanyRepository;
+import com.stockapp.companyservice.repositories.IpoRepository;
+import com.stockapp.companyservice.repositories.StockExchangeRepository;
+import com.stockapp.companyservice.repositories.StockPriceRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CompanyService {
 
     @Autowired
     CompanyRepository companyRepository;
+
+    @Autowired
+    BodRepository bodRepository;
+
+    @Autowired
+    IpoService ipoService;
+
+    @Autowired
+    IpoRepository ipoRepository;
+
+    @Autowired
+    StockPriceRepository stockPriceRepository;
+
+    @Autowired
+    StockPriceService stockPriceService;
+
+    @Autowired
+    StockExchangeRepository stockExchangeRepository;
 
 
     public List<Company> getAllCompanies()
@@ -25,12 +51,14 @@ public class CompanyService {
     public Company getCompanyById(int id)
     {
         Optional<Company> company = companyRepository.findById(id);
+
         return company.orElse(null);
 
     }
 
     public Company addCompany(Company company)
     {
+
         return companyRepository.save(company);
     }
 
@@ -38,19 +66,28 @@ public class CompanyService {
     {
         if(companyRepository.findById(id).isPresent())
         {
-            companyRepository.deleteById(id);
-            return true;
+                List<StockPrice> stocks = stockPriceRepository.findByCompanyId(id);
+                if(!stocks.isEmpty())
+                {
+                    stocks.forEach(stockPrice -> {
+                        stockPriceService.deleteByStockId(stockPrice.getId());
+                    });
+                }
+                Optional <Ipo> ipo = Optional.ofNullable(ipoRepository.findByCompanyId(id));
+                ipo.ifPresent(value -> ipoRepository.deleteById(value.getId()));
+                companyRepository.deleteById(id);
+                return true;
         }
         return false;
     }
 
     public Company updateCompany(int id, Company company)
     {
-        company.setId(id);
         Optional<Company> companyOptional = Optional.ofNullable(getCompanyById(id));
         if(companyOptional.isEmpty()) {
             return null;
         }
+        company.setId(id);
         return companyRepository.save(company);
     }
 
@@ -59,22 +96,46 @@ public class CompanyService {
         return companyRepository.findByNameContainingIgnoreCase(pattern);
     }
 
-    public List<Company> getCompanyByExchange(int id)
+    public List<Company> getCompanyByStockExchange(String name)
     {
-        return companyRepository.findCompanyByExchange(id);
+        return companyRepository.findByStockExchangeNamesContainingIgnoreCase(name);
     }
 
-    public Company deactivateCompany(int id)
+    public  Boolean updateCompanyForStockExchange(String exchangeName)
     {
-        Optional<Company> companyOptional = Optional.ofNullable(getCompanyById(id));
-        if(companyOptional.isEmpty()) {
-            return null;
+        Optional<List<Company>> companyList = Optional.ofNullable(getCompanyByStockExchange(exchangeName));
+
+        List<Company> updatedCompanyList = null;
+        if (companyList.isPresent())
+        {
+
+            Optional<StockExchange> exchange = stockExchangeRepository.findByName(exchangeName);
+            Optional <List<Ipo>> ipos = Optional.ofNullable(ipoRepository.findByStockExchangeId(exchange.get().getId()));
+            List<Ipo> ipoList=ipos.get();
+            if(!ipoList.isEmpty())
+            {
+                ipoList.forEach(ipo1->{
+                    ipoRepository.deleteById(ipo1.getId());
+                });
+            }
+            List<StockPrice> stocks = stockPriceRepository.findByStockExchangeId(exchange.get().getId());
+            if(!stocks.isEmpty())
+            {
+                stocks.forEach(stockPrice -> {
+                    stockPriceService.deleteByStockId(stockPrice.getId());
+                    });
+            }
+            List<Company> c= companyList.get();
+            c.forEach(company -> {
+            String[] exchange_list = company.getStockExchangeNames().split(",");
+            List<String> exchanges = new ArrayList<>(Arrays.asList(exchange_list));
+            exchanges.remove(exchangeName);
+;            company.setStockExchangeNames(String.join(",",exchanges));
+            companyRepository.save(company);
+                });
         }
-        companyRepository.deleteById(id);
-        return companyOptional.get();
+        return true;
     }
 
 
-
-	
 }

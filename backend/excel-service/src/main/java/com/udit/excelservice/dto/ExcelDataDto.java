@@ -1,4 +1,4 @@
-package dto;
+package com.udit.excelservice.dto;
 
 import java.sql.Timestamp;
 

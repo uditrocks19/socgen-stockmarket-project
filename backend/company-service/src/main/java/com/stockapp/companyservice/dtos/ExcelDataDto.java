@@ -1,42 +1,40 @@
 package com.stockapp.companyservice.dtos;
-import java.sql.Timestamp;
-
 public class ExcelDataDto {
 
-    private int companyId;
+    private String companyCode;
 
-    private int exchangeId;
+    private String stockExchangeName;
+
 
     private double price;
 
-    private Timestamp timestamp;
+    private String date;
 
-    protected ExcelDataDto() {
-      
-    }
-
-    public ExcelDataDto(int companyId, int exchangeId, double price, Timestamp timestamp) {
+    public ExcelDataDto() {
         super();
-        this.companyId = companyId;
-        this.exchangeId = exchangeId;
+    }
+
+    public ExcelDataDto(String companyCode, String stockExchangeName, double price, String date) {
+        this.companyCode = companyCode;
+        this.stockExchangeName = stockExchangeName;
         this.price = price;
-        this.timestamp = timestamp;
+        this.date = date;
     }
 
-    public int getCompanyId() {
-        return companyId;
+    public String getCompanyCode() {
+        return companyCode;
     }
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
     }
 
-    public int getExchangeId() {
-        return exchangeId;
+    public String getStockExchangeName() {
+        return stockExchangeName;
     }
 
-    public void setExchangeId(int exchangeId) {
-        this.exchangeId = exchangeId;
+    public void setStockExchangeName(String stockExchangeName) {
+        this.stockExchangeName = stockExchangeName;
     }
 
     public double getPrice() {
@@ -47,12 +45,13 @@ public class ExcelDataDto {
         this.price = price;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public String getDate() {
+        return date;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setDate(String date) {
+        this.date = date;
     }
+
 
 }

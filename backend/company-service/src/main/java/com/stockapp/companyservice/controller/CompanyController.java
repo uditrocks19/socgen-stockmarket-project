@@ -1,6 +1,7 @@
 package com.stockapp.companyservice.controller;
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/company")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CompanyController {
 
     @Autowired
@@ -49,9 +51,20 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.updateCompany(id, company));
     }
 
-    @GetMapping("/getCompanyByPattern/{pattern}")
+    @GetMapping("/stockExchange/{pattern}")
+    public ResponseEntity<?> getCompanyByExchangeName(@PathVariable("pattern") String pattern)
+    {
+        return ResponseEntity.ok(companyService.getCompanyByStockExchange(pattern));
+    }
+
+    @GetMapping("/pattern/{pattern}")
     public ResponseEntity<List<Company>> getCompanyByPattern(@PathVariable("pattern") String pattern){
         return ResponseEntity.ok(companyService.getCompanyByPattern(pattern));
+    }
+
+    @GetMapping("/update/companies/{name}")
+    public ResponseEntity<?> getCompaniesAfterDeletingExchange(@PathVariable("name") String name){
+        return ResponseEntity.ok(companyService.updateCompanyForStockExchange(name));
     }
 
 

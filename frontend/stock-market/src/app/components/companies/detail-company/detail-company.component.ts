@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { Company } from 'src/app/models/Company';
 import { Ipo } from 'src/app/models/Ipo';
